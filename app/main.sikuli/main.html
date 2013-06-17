@@ -1,0 +1,416 @@
+
+<html>
+   <head>
+      <style type="text/css">
+         .sikuli-code {
+            font-size: 20px;
+            font-family: "Osaka-mono", Monospace;
+            line-height: 1.5em;
+            display:table-cell;
+            white-space: pre-wrap;       /* css-3 */
+            white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+            white-space: -pre-wrap;      /* Opera 4-6 */
+            white-space: -o-pre-wrap;    /* Opera 7 */
+            word-wrap: break-word;       /* Internet Explorer 5.5+ */
+            width: 99%;   /* remove horizontal scroll-bar when viewing in IE7 */
+         }
+         .sikuli-code img {
+            vertical-align: middle;
+            margin: 2px;
+            border: 1px solid #ccc;
+            padding: 2px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-box-shadow: 1px 1px 1px gray;
+            -webkit-box-shadow: 1px 1px 2px gray;
+         }
+         .kw {
+            color: blue;
+         }
+         .skw {
+            color: rgb(63, 127, 127);
+         }
+
+         .str {
+            color: rgb(128, 0, 0);
+         }
+
+         .dig {
+            color: rgb(128, 64, 0);
+         }
+
+         .cmt {
+            color: rgb(200, 0, 200);
+         }
+
+         h2 {
+            display: inline;
+            font-weight: normal;
+         }
+
+         .info {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            display: none;
+         }
+
+         a {
+            color: #9D2900;
+         }
+
+         body {
+            font-family: "Trebuchet MS", Arial, Sans-Serif;
+         }
+
+      </style>
+   </head>
+<body>
+<div class="info">
+<h2>main.sikuli\main.sikuli</h2> <a href="main.sikuli\main.zip">(Download this script)</a>
+</div>
+<pre class="sikuli-code">
+<span class="kw">class</span> Window:
+
+    <span class="kw">def</span> init(self):
+        self.hideChatWindow()
+        self.hideUsersBar()
+        self.turnSoundsOff()
+        self.goFullScreen()
+        <span class="skw">wait</span>(<span class="dig">0.5</span>)
+        <span class="cmt"># bug - opening majors house dialog
+</span>        dialog = exists(<img src="dialogCloseButton.png" />)
+        <span class="kw">if</span> dialog:
+            <span class="skw">click</span>(dialog)
+
+
+    <span class="kw">def</span> hideUsersBar(self):
+        arrow = exists(Pattern(<img src="usersBarUpArrow.png" />).similar(<span class="dig">0.90</span>))
+        <span class="kw">if</span> arrow:
+            <span class="skw">click</span>(arrow)
+
+    <span class="kw">def</span> hideChatWindow(self):
+        button = exists(Pattern(<img src="chatMinimizeButton.png" />).similar(<span class="dig">0.90</span>).targetOffset(<span class="dig">0</span>,-<span class="dig">13</span>))
+        <span class="kw">if</span> button:
+            <span class="skw">click</span>(button)
+
+    <span class="kw">def</span> turnSoundsOff(self):
+        menu = exists(Pattern(<img src="settingsDownArrow.png" />).similar(<span class="dig">0.90</span>))
+        <span class="kw">if</span> (menu):
+            <span class="skw">click</span>(menu)
+        <span class="skw">wait</span>(<span class="dig">1</span>)
+        note = exists(Pattern(<img src="note.png" />).similar(<span class="dig">0.80</span>))
+        <span class="kw">if</span> (note):
+            <span class="skw">click</span>(note)
+        speaker = exists(Pattern(<img src="speaker.png" />).similar(<span class="dig">0.90</span>))
+        <span class="kw">if</span> (speaker):
+            <span class="skw">click</span>(speaker)
+        arrow = <span class="skw">find</span>(<img src="settingsUpArrow.png" />)
+        <span class="skw">click</span>(arrow)
+
+    <span class="kw">def</span> goFullScreen(self):
+        <span class="kw">if</span> exists(Pattern(<img src="browserButtons.png" />).similar(<span class="dig">0.90</span>)):
+            green = <span class="skw">find</span>(<img src="green.png" />)
+            <span class="skw">click</span>(green)
+            <span class="skw">type</span>(Key.F11)
+            confirm = exists(<img src="fullscreenAllowButton.png" />)
+            <span class="kw">if</span> confirm:
+                <span class="skw">click</span>(confirm)
+
+<span class="kw">class</span> Economy:
+
+    <span class="kw">def</span> open(self):
+        <span class="kw">if</span> <span class="kw">not</span> exists(<img src="economyTitle.png" />):
+            x = <span class="skw">find</span>(Pattern(<img src="economyButton.png" />).similar(<span class="dig">0.90</span>))
+            <span class="skw">click</span>(x)
+
+<span class="cmt"># buildings -----------------------------------------------------------------------------
+</span>
+<span class="kw">class</span> Buildings:
+
+    <span class="kw">def</span> open(self):
+        <span class="kw">if</span> <span class="kw">not</span> exists(<img src="buildingsTitle.png" />):
+            buildings = <span class="skw">find</span>(Pattern(<img src="buildingsButton.png" />).similar(<span class="dig">0.80</span>))
+            <span class="skw">click</span>(buildings)
+
+    <span class="cmt"># basic buildings -------------------------------------------------
+</span>
+    <span class="kw">def</span> Basic(self):
+        self.open()
+        tab = <span class="skw">find</span>(Pattern(<img src="buildingsBasicTab.png" />).similar(<span class="dig">0.90</span>))
+        <span class="skw">click</span>(tab)
+
+    <span class="kw">def</span> StoneMine(self):
+        self.Basic()
+        mine = <span class="skw">find</span>(<img src="stoneMineButton.png" />)
+        <span class="skw">click</span>(mine)
+
+    <span class="cmt"># middle buildings -------------------------------------------------
+</span>
+    <span class="kw">def</span> Middle(self):
+        self.open()
+        tab = <span class="skw">find</span>(Pattern(<img src="buildingsMiddleTab.png" />).similar(<span class="dig">0.90</span>))
+        <span class="skw">click</span>(tab)
+
+    <span class="kw">def</span> CopperMine(self):
+        self.Middle()
+        mine = <span class="skw">find</span>(<img src="copperMineButton.png" />)
+        <span class="skw">click</span>(mine)
+
+    <span class="kw">def</span> Well(self):
+        self.Middle()
+        well = <span class="skw">find</span>(<img src="wellButton.png" />)
+        <span class="skw">click</span>(well)
+
+    <span class="kw">def</span> Field(self):
+        self.Middle()
+        field = <span class="skw">find</span>(<img src="fieldButton.png" />)
+        <span class="skw">click</span>(field)
+
+    <span class="cmt"># advanced bildings ----------------------------------------
+</span>
+    <span class="kw">def</span> Advanced(self):
+        self.open()
+        tab = <span class="skw">find</span>(Pattern(<img src="buildingsAdvancedTab.png" />).similar(<span class="dig">0.90</span>))
+        <span class="skw">click</span>(tab)
+
+    <span class="kw">def</span> MarbleMine(self):
+        self.Advanced()
+        mine = <span class="skw">find</span>(<img src="marbleMineButton.png" />)
+        <span class="skw">click</span>(mine)
+
+    <span class="kw">def</span> IronMine(self):
+        self.Advanced()
+        mine = <span class="skw">find</span>(<img src="ironMineButton.png" />)
+        <span class="skw">click</span>(mine)
+
+    <span class="kw">def</span> CoalMine(self):
+        self.Advanced()
+        mine = <span class="skw">find</span>(<img src="coalMineButton.png" />)
+        <span class="skw">click</span>(mine)
+
+    <span class="kw">def</span> GoldMine(self):
+        self.Advanced()
+        mine = <span class="skw">find</span>(<img src="goldMineButton.png" />)
+        <span class="skw">click</span>(mine)
+
+    <span class="kw">def</span> Well2(self):
+        self.Advanced()
+        well = <span class="skw">find</span>(<img src="well2Button.png" />)
+        <span class="skw">click</span>(well)
+
+    <span class="kw">def</span> Field2(self):
+        self.Advanced()
+        field = <span class="skw">find</span>(<img src="field2Button.png" />)
+        <span class="skw">click</span>(field)
+
+    <span class="cmt"># expert buildings -----------------------------------------
+</span>
+    <span class="kw">def</span> Expert(self):
+        self.open()
+        tab = <span class="skw">find</span>(Pattern(<img src="buildingsExpertTab.png" />).similar(<span class="dig">0.90</span>))
+        <span class="skw">click</span>(tab)
+
+    <span class="cmt"># building tools --------------------------------------------
+</span>
+    <span class="kw">def</span> Tools(self):
+        self.open()
+        tab = <span class="skw">find</span>(Pattern(<img src="buildingsToolsTab.png" />).similar(<span class="dig">0.90</span>))
+        <span class="skw">click</span>(tab)
+
+
+<span class="cmt"># main menu -------------------------------------------------------------------------
+</span>
+<span class="kw">class</span> Menu:
+
+    <span class="kw">def</span> open(self):
+        <span class="kw">if</span> <span class="kw">not</span> exists(<img src="dragonFace.png" />):
+            star = <span class="skw">find</span>(Pattern(<img src="nemuStar.png" />).similar(<span class="dig">0.90</span>))
+            <span class="skw">click</span>(star)
+
+    <span class="cmt"># specialists -----------------------------------------------------
+</span>
+    <span class="kw">def</span> Specialists(self):
+        self.open()
+        tab = <span class="skw">find</span>(<img src="menuSpecialistsTab.png" />)
+        <span class="skw">click</span>(tab)
+
+    <span class="kw">def</span> Explorer(self):
+        self.Specialists()
+        explorer = <span class="skw">find</span>(Pattern(<img src="explorerButton.png" />).similar(<span class="dig">0.90</span>))
+        <span class="skw">click</span>(explorer)
+
+    <span class="kw">def</span> exploreSector(self):
+        self.Explorer()
+        telescope = <span class="skw">find</span>(<img src="telescopeButton.png" />)
+        <span class="skw">click</span>(telescope)
+
+    <span class="kw">def</span> findTreasure(self, time):
+        self.Explorer()
+        chest = <span class="skw">find</span>(<img src="chestButton.png" />)
+        <span class="skw">click</span>(chest)
+        <span class="kw">if</span> time == <span class="dig">1</span>:
+            timer = <span class="skw">find</span>(Pattern(<img src="timer1Button.png" />).exact())
+            <span class="skw">click</span>(timer)
+        <span class="kw">elif</span> time == <span class="dig">2</span>:
+            timer = <span class="skw">find</span>(Pattern(<img src="timer2Button.png" />).exact())
+            <span class="skw">click</span>(timer)
+        <span class="kw">elif</span> time == <span class="dig">3</span>:
+            <span class="cmt"># todo: update image
+</span>            timer = <span class="skw">find</span>(Pattern(<img src="timer3Button.png" />).exact())
+            <span class="skw">click</span>(timer)
+        <span class="kw">else</span>:
+            <span class="cmt"># todo: update image
+</span>            timer = <span class="skw">find</span>(Pattern(<img src="timer4Button.png" />).exact())
+            <span class="skw">click</span>(timer)
+
+    <span class="kw">def</span> findAdventure(self, time):
+        self.Explorer()
+        map = <span class="skw">find</span>(<img src="mapButton.png" />)
+        <span class="skw">click</span>(map)
+        <span class="kw">if</span> time == <span class="dig">1</span>:
+            timer = <span class="skw">find</span>(Pattern(<img src="timer1Button.png" />).exact())
+            <span class="skw">click</span>(timer)
+        <span class="kw">elif</span> time == <span class="dig">2</span>:
+            timer = <span class="skw">find</span>(Pattern(<img src="timer2Button.png" />).exact())
+            <span class="skw">click</span>(timer)
+        <span class="kw">else</span>:
+            <span class="cmt"># todo: update image
+</span>            timer = <span class="skw">find</span>(Pattern(<img src="timer3Button.png" />).exact())
+            <span class="skw">click</span>(timer)
+
+    <span class="kw">def</span> Geologist(self):
+        self.Specialists()
+        geologist = <span class="skw">find</span>(Pattern(<img src="geologistButton.png" />).similar(<span class="dig">0.90</span>))
+        <span class="skw">click</span>(geologist)
+
+    <span class="kw">def</span> findStone(self):
+        self.Geologist()
+        stone = <span class="skw">find</span>(<img src="stoneButton.png" />)
+        <span class="skw">click</span>(stone)
+
+    <span class="kw">def</span> findCopper(self):
+        self.Geologist()
+        copper = <span class="skw">find</span>(<img src="copperButton.png" />)
+        <span class="skw">click</span>(copper)
+
+    <span class="kw">def</span> findMarble(self):
+        self.Geologist()
+        marble = <span class="skw">find</span>(<img src="marbleButton.png" />)
+        <span class="skw">click</span>(marble)
+
+    <span class="kw">def</span> findIron(self):
+        self.Geologist()
+        iron = <span class="skw">find</span>(<img src="ironButton.png" />)
+        <span class="skw">click</span>(iron)
+
+    <span class="kw">def</span> findCoal(self):
+        self.Geologist()
+        coal = <span class="skw">find</span>(<img src="coalButton.png" />)
+        <span class="skw">click</span>(coal)
+
+    <span class="kw">def</span> findGold(self):
+        self.Geologist()
+        gold = <span class="skw">find</span>(<img src="goldButton.png" />)
+        <span class="skw">click</span>(gold)
+
+    <span class="cmt"># bonuses --------------------------------------------------------------
+</span>
+    <span class="kw">def</span> Buffs(self):
+        self.open()
+        tab = <span class="skw">find</span>(<img src="menuBuffsTab.png" />)
+        <span class="skw">click</span>(tab)
+
+    <span class="kw">def</span> FishPlate(self):
+        self.Buffs()
+        plate = <span class="skw">find</span>(Pattern(<img src="menuFishPlateButton.png" />).similar(<span class="dig">0.90</span>))
+        <span class="skw">click</span>(plate)
+
+    <span class="cmt"># resources -------------------------------------------------------------
+</span>
+
+    <span class="kw">def</span> Resources(self):
+        self.open()
+        tab = <span class="skw">find</span>(<img src="menuResourcesTab.png" />)
+        <span class="skw">click</span>(tab)
+
+
+<span class="cmt"># supplies -------------------------------------------------------------------
+</span>
+<span class="kw">class</span> Supplies:
+
+    <span class="kw">def</span> open(self):
+        building = <span class="skw">find</span>(<img src="suppliesBuilding.png" />)
+        <span class="skw">click</span>(building)
+        <span class="skw">click</span>(building)
+
+    <span class="kw">def</span> Resources(self):
+        self.open()
+        tab = <span class="skw">find</span>(<img src="suppliesResourcesTab.png" />)
+        <span class="skw">click</span>(tab)
+
+    <span class="cmt"># deposits ---------------------------------------------------------------
+</span>
+    <span class="kw">def</span> Deposits(self):
+        self.open()
+        tab = <span class="skw">find</span>(<img src="suppliesDepositsTab.png" />)
+        <span class="skw">click</span>(tab)
+
+    <span class="kw">def</span> makeFishFood(self, count):
+        self.Deposits()
+        food = <span class="skw">find</span>(<img src="fishFoodButton.png" />)
+        <span class="skw">click</span>(food)
+        arrow = <span class="skw">find</span>(Pattern(<img src="leftArrow.png" />).similar(<span class="dig">0.90</span>))
+        <span class="kw">while</span> count &gt; <span class="dig">1</span>:
+            <span class="skw">click</span>(arrow)
+            count = count - <span class="dig">1</span>
+        ok = <span class="skw">find</span>(<img src="okButton.png" />)
+        <span class="skw">click</span>(ok)
+
+    <span class="kw">def</span> makeDeerFood(self, count):
+        self.Deposits()
+        food = <span class="skw">find</span>(<img src="deerFoodButton.png" />)
+        <span class="skw">click</span>(food)
+        arrow = <span class="skw">find</span>(Pattern(<img src="leftArrow.png" />).similar(<span class="dig">0.90</span>))
+        <span class="kw">while</span> count &gt; <span class="dig">1</span>:
+            <span class="skw">click</span>(arrow)
+            count = count - <span class="dig">1</span>
+        ok = <span class="skw">find</span>(<img src="okButton.png" />)
+        <span class="skw">click</span>(ok)
+
+<span class="cmt"># actions --------------------------------------------------------------------
+</span>
+<span class="kw">class</span> Maintenance:
+
+    <span class="kw">def</span> rebuildField():
+        field = <span class="skw">find</span>(Pattern(<img src="emptyField.png" />).similar(<span class="dig">0.50</span>))
+        <span class="skw">click</span>(field)
+        <span class="skw">click</span>(field) <span class="cmt"># click bug</span>
+        bomb = <span class="skw">wait</span>(<img src="bombButton.png" />)
+        <span class="skw">click</span>(bomb)
+        ok = <span class="skw">wait</span>(<img src="okButton.png" />)
+        <span class="skw">click</span>(ok)
+        Buildings().Field()
+        <span class="skw">wait</span>(<span class="dig">11</span>)
+        <span class="skw">click</span>(field)
+
+    <span class="kw">def</span> rebuildWell():
+        well = <span class="skw">find</span>(Pattern(<img src="emptyWell.png" />).similar(<span class="dig">0.90</span>))
+        <span class="skw">click</span>(well)
+        <span class="skw">click</span>(well) <span class="cmt"># click bug</span>
+        bomb = <span class="skw">wait</span>(<img src="bombButton.png" />, <span class="dig">2</span>)
+        <span class="skw">click</span>(bomb)
+        ok = <span class="skw">wait</span>(<img src="okButton.png" />, <span class="dig">2</span>)
+        <span class="skw">click</span>(ok)
+        Buildings().Well()
+        <span class="skw">wait</span>(<span class="dig">11</span>)
+        <span class="skw">click</span>(well)
+
+
+
+<span class="cmt">#Buildings().Field()
+</span><span class="cmt">#Supplies().makeFishFood(5)
+</span>Window().init()
+</pre>
+</body>
+</html>
