@@ -7,7 +7,7 @@ class Supplies:
     def open(self):
         building = find("suppliesBuilding.png")
         click(building)
-        click(building)
+        click(building) # click lag
     
     def Resources(self):
         self.open()

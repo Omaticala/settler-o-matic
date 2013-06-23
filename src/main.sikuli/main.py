@@ -1,10 +1,5 @@
 
-import sys
 from sikuli.Sikuli import *
-
-myScriptPath = "c:\\http\\omaticala\\settler-o-matic\\src"
-if not myScriptPath in sys.path:
-    sys.path.append(myScriptPath)
 
 from game import *
 from map import *
@@ -15,10 +10,8 @@ from buildings import *
 from maintenance import *
 from supplies import *
 
-g = Game()
-g.init()
 
-#map = Map()
+g = Game()
 
 #Buildings.Field()
 #Supplies.makeFishFood(5)

@@ -31,6 +31,9 @@ from sikuli.Sikuli import *
 # +-------------------------------+
 #
 
+class MapException(Exception):
+    pass
+
 class Map:
     "facilitates movement on map and searching of items through all sectors of map"
 
@@ -50,14 +53,15 @@ class Map:
         self.topRight = Location(self.maxX, self.minY)
         self.bottomRight = Location(self.maxX, self.maxY)
         self.bottomLeft = Location(self.minX, self.maxY)
-        self.region = Region(self.minX, self.minY, self.width, self.height)
 
         self.stepX = self.maxX - self.minX - self.scrollOverlap
         self.stepY = self.maxY - self.minY - self.scrollOverlap
         self.stepsX = round(3700 / self.stepX, 0)
         self.stepsY = round(2210 / self.stepY, 0)
 
-        self.calibrate()
+        self.region = Region(self.minX, self.minY, self.stepX, self.stepY)
+
+        #self.calibrate()
         #self.showUsableArea()
         #self.testMovement()
         
@@ -82,8 +86,8 @@ class Map:
             self.down()
             self.left()
             n = n + 1
-            if n > 6:
-                break
+            if n > 8:
+                raise MapException("Cannot calibrate map position")
         
         orig = Location(self.bottomLeft.x + 600, self.bottomLeft.y - 250)
         dragDrop(orig, self.bottomLeft)
@@ -125,7 +129,7 @@ class Map:
         self.x = self.x - self.stepX
         print('left: ' + str(self.topLeft.x - dest.x))
 
-    def scanMap(self):
+    def scanMap(self, callback):
         "scans all screens of the map"
         self.calibrate()
         x = 0
@@ -138,7 +142,6 @@ class Map:
             while x > 0:
                 self.left()
                 x = x - 1
-        self.calibrate()
 
     def _scanMapY(self):
         "scans one column of the map (internal)"

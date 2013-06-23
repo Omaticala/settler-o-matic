@@ -1,8 +1,18 @@
 
+#import sys
+#myScriptPath = "c:\\http\\omaticala\\settler-o-matic\\src"
+#if not myScriptPath in sys.path:
+#    sys.path.append(myScriptPath)
+    
 from sikuli.Sikuli import *
 
 from map import *
 from queue import *
+from maintenance import *
+
+
+class GameException(Exception):
+    pass
 
 class Game:
 
@@ -11,13 +21,15 @@ class Game:
         self.init()
         self.map = Map()
         self.queue = Queue()
+        self.maintenance = Maintenance(self.map, self.queue)
+        self.maintenance.run()
 
     def init(self):
         "ensure game is running and has maximal viewport"
         self.startGame()
         self.hideChatWindow()        
         self.hideUsersBar()
-        self.turnSoundsOff()
+        #self.turnSoundsOff()
         self.goFullScreen()
 
     def startGame(self):
@@ -25,10 +37,12 @@ class Game:
         if play:
             click(play)
             ok = wait("okButton.png", 60)
-            # todo: error
-            click(ok)
+            if ok:
+                click(ok)
+            else:
+                raise GameException("Cannot start game.")
 
-    def hideUsersBar(cls):
+    def hideUsersBar(self):
         arrow = exists(Pattern("usersBarUpArrow.png").similar(0.90))
         if arrow:
             click(arrow)
@@ -54,7 +68,7 @@ class Game:
 
     def goFullScreen(self):
         if exists(Pattern("browserButtons.png").similar(0.90)):
-            green = find("green.png")
+            green = find(Pattern("green-1.png").similar(0.50))
             click(green)
             type(Key.F11)
             confirm = exists("fullscreenAllowButton.png")
@@ -62,9 +76,16 @@ class Game:
                 click(confirm)
                 wait(0.5)
                 # bug - opening majors house dialog
-                dialog = exists("dialogCloseButton.png")
-                if dialog:
-                    click(dialog)
+                cross = exists("dialogCloseButton.png")
+                if cross:
+                    click(cross)
+
+
+def closeDialog():
+    cross = exists("dialogCloseX.png")
+    if cross:
+        click(cross)
+        
 
 if __name__ == '__main__':
     g = Game()
