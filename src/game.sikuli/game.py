@@ -8,6 +8,7 @@ from sikuli.Sikuli import *
 
 from map import *
 from queue import *
+from economy import *
 from maintenance import *
 
 
@@ -21,7 +22,8 @@ class Game:
         self.init()
         self.map = Map()
         self.queue = Queue()
-        self.maintenance = Maintenance(self.map, self.queue)
+        self.economy = Economy()
+        self.maintenance = Maintenance(self.map, self.queue, self.economy)
         self.maintenance.run()
 
     def init(self):

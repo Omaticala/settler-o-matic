@@ -1,10 +1,11 @@
 
 from sikuli.Sikuli import *
 
-from game import *
 from map import *
+from game import *
 from queue import *
 from build import *
+from economy import *
 from supplies import *
 
 
@@ -13,9 +14,10 @@ class MaintenanceException(Exception):
 
 class Maintenance:
 
-    def __init__(self, map, queue):
+    def __init__(self, map, queue, economy):
         self.map = map
         self.queue = queue
+        self.economy = economy
         self.supplies = Supplies()
         self.minesToFind = []
         pass
@@ -39,7 +41,7 @@ class Maintenance:
             while fields.hasNext():
                 field = fields.next()
                 self.destroy(field)
-                Buildings().Field()
+                Build().Field()
                 wait(11) # wait till its destroyed
                 click(field)
                 wait(5)
@@ -55,7 +57,7 @@ class Maintenance:
             while wells.hasNext():
                 well = wells.next()
                 self.destroy(well)
-                Buildings().Well()
+                Build().Well()
                 wait(11) # wait till its destroyed
                 click(well)
                 wait(5)
@@ -122,7 +124,7 @@ class Maintenance:
                 raise MaintenanceException("Cannot open building.")
 
 if __name__ == '__main__':
-    m = Maintenance(Map(), Queue())
+    m = Maintenance(Map(), Queue(), Economy())
     s = SCREEN
     m.rebuildWells(s)
     m.rebuildFields(s)
