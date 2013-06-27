@@ -2,7 +2,7 @@
 from sikuli.Sikuli import *
 
 #
-# Screen area
+# Screen area:
 # - some areas of screen cannot be used for navigation and search, as they contain game menus and other stuff
 # - safe screen area is below:
 # +-------------------------------+
@@ -16,7 +16,7 @@ from sikuli.Sikuli import *
 # +-------------------------------+
 #
 # Map size:
-# - map has fixed size and is surrounded by various width sea
+# - map has fixed size and is surrounded by various width sea margin
 # - for search the position of viewport must be known
 # - before each search the position must be re-calibrated
 # - beware, that the Y coordinate of map is reversed, compared to Y coordinate of screen
@@ -156,7 +156,7 @@ class Map:
                 self.down()
                 y = y - 1
 
-    def doScan(self):
+    def forAllSectors(self):
         "scans one screen of the map"
         pass
 

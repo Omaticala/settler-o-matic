@@ -106,20 +106,60 @@ class Menu:
     # bonuses --------------------------------------------------------------
     
     def Buffs(self):
+        "opens Buffs menu"
         self.open()
         tab = find("buffsTab.png")
         click(tab)
 
     def FishPlate(self):
+        "selects Fish Plate, returns 1 if ok"
         self.Buffs()
-        plate = find(Pattern("fishPlateButton.png").similar(0.90))
-        click(plate)
+        plate = exists(Pattern("fishPlateButton.png").similar(0.90))
+        if plate:
+            click(plate)
+            return 1
+        return 0
+
+    def Sandwich(self):
+        "selects Big Sandwich, returns 1 if ok"
+        self.Buffs()
+        sandwich = exists(Pattern("sandwich.png").similar(0.90))
+        if sandwich:
+            click(sandwich)
+            return 1
+        return 0
+
+    def Basket(self):
+        "selects Aunt Irma's Basket, returns 1 if ok"
+        basket = exists(Pattern("basket.png").similar(0.90))
+        if basket:
+            click(basket)
+            return 1
+        return 0
+
+    def Drink(self):
+        "selects Red Drink, return 1 if ok"
+        drink = exists("drink.png")
+        if drink:
+            click(drink)
+            return 1
+        return 0
 
     # resources -------------------------------------------------------------
-    
     
     def Resources(self):
         self.open()
         tab = find("resourcesTab.png")
         click(tab)
 
+    def FishFood(self):
+        self.Resources()
+        ##
+
+    def DeerFood(self):
+        self.Resources()
+        ##
+
+
+        
+        

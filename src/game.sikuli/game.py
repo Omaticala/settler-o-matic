@@ -1,14 +1,20 @@
 
-#import sys
-#myScriptPath = "c:\\http\\omaticala\\settler-o-matic\\src"
-#if not myScriptPath in sys.path:
-#    sys.path.append(myScriptPath)
-    
 from sikuli.Sikuli import *
 
+import map
+reload(map)
 from map import *
+
+import queue
+reload(queue)
 from queue import *
+
+import economy
+reload(economy)
 from economy import *
+
+import maintenance
+reload(maintenance)
 from maintenance import *
 
 
@@ -33,6 +39,10 @@ class Game:
         self.hideUsersBar()
         #self.turnSoundsOff()
         self.goFullScreen()
+
+    def restartGame(self):
+        fail = exists(Pattern("fail.png").similar(0.90).targetOffset(5,44))
+        # ...
 
     def startGame(self):
         play = exists("playNowButton.png")
