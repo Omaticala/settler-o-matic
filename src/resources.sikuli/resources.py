@@ -1,33 +1,52 @@
 
 from sikuli.Sikuli import *
 
-import builder
-reload(builder)
-from builder import *
+class WaitingException(Exception):
+    pass
 
 
 class Resources:
+    "checks resources and refills/rebuilds them"
 
-    def __init__(self, supplies):
-        self.builder = Builder()
+    # callback for multitasking, when waiting
+    callback = 0
+
+    # current region
+    region = 0
+
+    def __init__(self, builder, supplies):
+        self.builder = builder
         self.supplies = supplies
+        self.callback = self.dummy
+
+    def setCallback(self, callback):
+        "set multitasking callback"
+        self.callback = callback
+    
+    def multitask(self):
+        "give control to multitasking callback"
+        if self.callback:
+            self.callback(self.region)
+
+    def dummy(self, region):
+        print("dummy waiting")
+        wait(10)
 
     def checkRegion(self, region):
+        "check all necessities in given region"
+        self.region = region
         self.rebuildFields(region)
         self.rebuildWells(region)
 
     def rebuildFields(self, region):
         "find depleted fields, delete them and build again in the same place"
         try:
-            fields = region.findAll(Pattern("emptyField.png").similar(0.50))
+            fields = region.findAll(Pattern("emptyField.png").similar(0.47))
             while fields.hasNext():
                 field = fields.next()
-                self.destroy(field)
-                Build().Field()
-                wait(11) # wait till its destroyed
+                self.waitForSocket()
+                self.builder.Field()
                 click(field)
-                wait(5)
-                waitVanish("fieldIcon.png")
                 # todo: measure time and add to queue
         except FindFailed:
             pass
@@ -35,25 +54,27 @@ class Resources:
     def rebuildWells(self, region):
         "find depleted wells, delete them and build again in the same place"
         try:
-            wells = region.findAll(Pattern("emptyWell.png").similar(0.90))
+            wells = region.findAll(Pattern("emptyWell.png").similar(0.75))
             while wells.hasNext():
                 well = wells.next()
-                self.destroy(well)
-                Build().Well()
-                wait(11) # wait till its destroyed
+                self.waitForSocket()
+                self.builder.Well()
                 click(well)
-                wait(5)
-                waitVanish("wellIcon.png")
                 #todo: measure time and add to queue
         except FindFailed:
             pass
 
-    def destroy(self, building):
-        "destroy depleted building (well or field)"
-        self.safeClick(building)
-        click("bombButton.png")
-        ok = wait(Pattern("okButton.png").similar(0.80))
-        click(ok)
+    def waitForSocket(self):
+        "wait till another building socket is free. (uses max 2 of 3 building sockets)"
+        self.multitask()
+        full = exists(Pattern("buildingQueueCancelButton-1.png").similar(0.95))
+        n = 0
+        while full:
+            wait(10)
+            full = exists(Pattern("buildingQueueCancelButton-1.png").similar(0.95))
+            n = n + 1
+            if n > 60:
+                raise WaitingException("Building takes more than 10 minutes.")
 
     def safeClick(self, building):
         "click() with click-lag prevention (the game sometimes does not react to click on a building)"
@@ -67,9 +88,18 @@ class Resources:
             # move the mouse a little bit. prevents click lag
             hover(Location(building.getTarget().getX() + 10, building.getTarget().getY()))
             n = n + 1
-            if n > 5:
+            if n > 3:
                 raise MaintenanceException("Cannot open building.")
 
 
-
+if __name__ == '__main__':
+    import supplies
+    import builder
+    reload(supplies)
+    reload(builder)
+    from supplies import *
+    from builder import *
+    
+    r = Resources(Builder(), Supplies())
+    r.checkRegion(SCREEN)
     

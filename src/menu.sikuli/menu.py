@@ -3,18 +3,49 @@ from sikuli.Sikuli import *
 
 
 class Menu:
+
+    tab = ""
     
     def open(self):
-        if not exists("dragonFace.png"):
-            star = find(Pattern("star.png").similar(0.90))
-            click(star)
+        if not exists("dragonFace.png", 0):
+            click(Pattern("star.png").similar(0.90))
+
+    def All(self):
+        "opens 'all' menu"
+        self.open()
+        if self.tab != "all":
+            click("all.png")
+            self.tab = "all"
+
+    def Specialists(self):
+        "opens specialists menu"
+        self.open()
+        if self.tab != "specialists":
+            click("specialistsTab.png")
+            self.tab = "specialists"
+
+    def Buffs(self):
+        "opens Buffs menu"
+        self.open()
+        if self.tab != "buffs":
+            click("buffsTab.png")
+            self.tab = "buffs"
+
+    def Resources(self):
+        "opens resources menu"
+        self.open()
+        if self.tab != "resources":
+            click("resourcesTab.png")
+            self.tab = "resources"
+
+    def Misc(self):
+        "opens 'misc' menu"
+        self.open()
+        if self.tab != "misc":
+            click("misc.png")
+            self.tab = "misc"
 
     # specialists -----------------------------------------------------
-    
-    def Specialists(self):
-        self.open()
-        tab = find("specialistsTab.png")
-        click(tab)
 
     def Explorer(self):
         self.Specialists()
@@ -103,13 +134,7 @@ class Menu:
         gold = find("goldButton.png")
         click(gold)
 
-    # bonuses --------------------------------------------------------------
-    
-    def Buffs(self):
-        "opens Buffs menu"
-        self.open()
-        tab = find("buffsTab.png")
-        click(tab)
+    # buffs ----------------------------------------------------------------
 
     def FishPlate(self):
         "selects Fish Plate, returns 1 if ok"
@@ -146,11 +171,6 @@ class Menu:
         return 0
 
     # resources -------------------------------------------------------------
-    
-    def Resources(self):
-        self.open()
-        tab = find("resourcesTab.png")
-        click(tab)
 
     def FishFood(self):
         self.Resources()

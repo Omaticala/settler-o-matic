@@ -33,8 +33,8 @@ class Building:
         return exists(Pattern("pauseButton.png").exact(), 0)
         
     def isBuffed(self):
-        wait(1)
-        sandwich = exists("sandwich.png")
+        #wait(1)
+        sandwich = exists("sandwich.png", 0)
 
         hover(sandwich)
         

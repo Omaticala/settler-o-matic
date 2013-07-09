@@ -1,21 +1,19 @@
 
 from sikuli.Sikuli import *
 
-import map
-reload(map)
-from map import *
+#import map
+#import economy
+#import maintenance
 
-import queue
-reload(queue)
-from queue import *
+#reload(map)
+#reload(queue)
+#reload(economy)
+#reload(maintenance)
 
-import economy
-reload(economy)
-from economy import *
-
-import maintenance
-reload(maintenance)
-from maintenance import *
+#from map import *
+#from queue import *
+#from economy import *
+#from maintenance import *
 
 
 class GameException(Exception):
@@ -26,11 +24,6 @@ class Game:
     def __init__(self):
         Settings.MoveMouseDelay = 0.25 # double speed
         self.init()
-        self.map = Map()
-        self.queue = Queue()
-        self.economy = Economy()
-        self.maintenance = Maintenance(self.map, self.queue, self.economy)
-        self.maintenance.run()
 
     def init(self):
         "ensure game is running and has maximal viewport"

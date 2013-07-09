@@ -2,11 +2,12 @@
 from sikuli.Sikuli import *
 
 import building
-reload(building)
-from building import *
-
 import comodity
+
+reload(building)
 reload(comodity)
+
+from building import *
 from comodity import *
 
 #
@@ -56,14 +57,13 @@ class Economy:
     inProduction = 0
 
     def __init__(self):
-
         self.open()
         self.closeAllMenus()
         self.close()
         
     def open(self):
         "open economy menu (if not opened already)"
-        if not exists("economyTitle.png", 0):
+        if not exists(Pattern("economyMenuHeader.png").similar(0.90), 0):
             click(Pattern("economyIcon.png").similar(0.80))
             print("opening Economy")
             wait(self.menuDelay)
@@ -74,6 +74,7 @@ class Economy:
         if close:
             click(close)
             print("closing Economy")
+            wait(self.menuDelay)
         self.opened = 0
         
     # menus ---------------------------------------------------------------
@@ -82,22 +83,22 @@ class Economy:
         top = exists(Pattern("scrollbarTop-1.png").exact(), 0)
         if top:
             dragDrop(top, Pattern("scrollBarTopArrow.png").similar(0.80))
+            print("scroll to top")
         self.scroll = 1
-        print("scroll to top")
 
     def scrollToMiddle(self):
         top = exists(Pattern("scrollbarTop-1.png").exact(), 0)
         if top:
             dragDrop(top, Pattern("scrollBarBottom.png").exact())
+            print("scroll to middle")
         self.scroll = 2
-        print("scroll to middle")
             
     def scrollToBottom(self):
         bottom = exists(Pattern("scrollBarBottom.png").exact(), 0)
         if bottom:
             dragDrop(bottom, "scrollBarArrowDown.png")
+            print("scroll to bottom")
         self.scroll = 3
-        print("scroll to bottom")
     
     def closeAllMenus(self):
         "close all menus to ease automated navigatoin (less scrolling)"
@@ -138,12 +139,12 @@ class Economy:
         self.open()
         if self.menu != "buildmat":
             self.closeCurrentMenu()
-        button = find(Pattern("buildingMaterialsMenu.png").similar(0.90))
-        click(button)
-        wait(self.menuDelay)
-        self.button = button
-        self.menu = "buildmat"
-        print("open buildmat")
+            button = find(Pattern("buildingMaterialsMenu.png").exact())
+            click(button)
+            wait(self.menuDelay)
+            self.button = button
+            self.menu = "buildmat"
+            print("open buildmat")
 
     def openFoodMenu(self):
         self.open()
@@ -442,7 +443,7 @@ class Economy:
         loc = find(Pattern("exoticWood.png").exact())
         click(loc)
         self.comodity = Comodity("ExoticWood", loc)
-        self.building = "ExoticWoodCutter"
+        self.building = ""
         return self
 
     def PineTrees(self):
@@ -466,7 +467,7 @@ class Economy:
         click(Pattern("exoticWood.png").exact())
         click("pineTree.png")
         self.comodity = 0
-        self.building = "ExoticWoodForrester"
+        self.building = ""
         return self
 
     def Coal(self):
@@ -538,7 +539,7 @@ class Economy:
         loc = find(Pattern("titanOre.png").exact())
         click(loc)
         self.comodity = Comodity("TitanOre", loc)
-        self.building = "TitanMine [N/A]"
+        self.building = ""
         return self
 
     def Titan(self):
@@ -554,7 +555,7 @@ class Economy:
         loc = find(Pattern("saltpeter.png").exact())
         click(loc)
         self.comodity = Comodity("Saltpeter", loc)
-        self.building = "SaltpeterMine [N/A]"
+        self.building = ""
         return self
 
     def GunPowder(self):
@@ -570,7 +571,7 @@ class Economy:
         loc = find(Pattern("granite.png").exact())
         click(loc)
         self.comodity = Comodity("Granite", loc)
-        self.building = "GraniteMine [N/A]"
+        self.building = ""
         return self
 
     def Water(self):
@@ -626,9 +627,10 @@ class Economy:
     def production(self, number = 1):
         "opens production listing from the production chain view"
         self.inProduction = 1
-        click(Pattern("comodityIconTopFrame.png").exact().targetOffset(-20,20))
+        wait(self.menuDelay)
+        click(Pattern("comodityIconTopFrame.png").similar(0.95).targetOffset(-20,20))
         if number == 1:
-            click(Pattern("production.png").exact().targetOffset(-37,36))
+            click(Pattern("production.png").exact().targetOffset(-37,36)) 
         elif number == 2:
             click(Pattern("production.png").exact().targetOffset(-36,87))
             if self.building == "CoalMine":
@@ -640,37 +642,45 @@ class Economy:
 
     def selectBuilding(self, number):
         "selects N-th building in the production list, returns Building object or 0 if there is none"
-        if not self.inProduction:
-            self.production()
-        
-        if number == 1:
-            location = find(Pattern("productionTopBorder.png").exact().targetOffset(-31,48))
-        elif number == 2:
-            location = find(Pattern("productionTopBorder.png").exact().targetOffset(-31,100))
-        elif number == 3:
-            location = find(Pattern("productionTopBorder.png").exact().targetOffset(-30,154))
-        elif number == 4:
-            location = find(Pattern("productionTopBorder.png").exact().targetOffset(-32,201))
-        elif number == 5:
-            location = find(Pattern("productionTopBorder.png").exact().targetOffset(-32,250))
-        else:
-            arrow = exists(Pattern("productionScrollBarDownArrow.png").exact())
-            if arrow:
+        try:
+            if not self.inProduction:
+                self.production()
+            
+            if number == 1:
+                location = find(Pattern("productionTopBorder.png").exact().targetOffset(-31,48))
+            elif number == 2:
+                location = find(Pattern("productionTopBorder.png").exact().targetOffset(-31,100))
+            elif number == 3:
+                location = find(Pattern("productionTopBorder.png").exact().targetOffset(-30,154))
+            elif number == 4:
+                location = find(Pattern("productionTopBorder.png").exact().targetOffset(-32,201))
+            elif number == 5:
                 location = find(Pattern("productionTopBorder.png").exact().targetOffset(-32,250))
-                # scroll down
-                n = 5
-                while n < number:
-                    # test if there is other building in list
-                    if (number - n == 1):
-                        end = exists(Pattern("productionScrollBarAtBottom.png").exact(), 0)
-                        if end:
-                            # no other building
-                            return 0
-                    n = n + 1
-                    click(arrow)
             else:
-                # no scroll bar - no building
-                return 0
+                arrow = exists(Pattern("productionScrollBarDownArrow.png").exact())
+                if arrow:
+                    location = find(Pattern("productionTopBorder.png").exact().targetOffset(-32,250))
+                    # scroll down
+                    n = 5
+                    while n < number:
+                        # test if there is other building in list
+                        if (number - n == 1):
+                            end = exists(Pattern("productionScrollBarAtBottom.png").exact(), 0)
+                            if end:
+                                # no other building
+                                self.close()
+                                return 0
+                        n = n + 1
+                        click(arrow)
+                else:
+                    # no scroll bar - no building
+                    self.close()
+                    return 0
+
+        # when comodity has no production
+        except FindFailed:
+            self.close()
+            return 0
                 
         # check if there is actually some building at the location
         if number < 6 and location:
@@ -680,6 +690,7 @@ class Economy:
             #region.highlight()
             if region.exists(Pattern("emptySlot.png").exact(), 0):
                 # the building slot is empty
+                self.close()
                 return 0
 
         # select it, finally!
@@ -689,8 +700,7 @@ class Economy:
 
         self.inProduction = 0
         wait(self.menuDelay)
-        b = Building(self.building)
-        return b
+        return Building(self.building)
     
 
 if __name__ == '__main__':

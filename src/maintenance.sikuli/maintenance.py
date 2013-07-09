@@ -3,7 +3,9 @@ from sikuli.Sikuli import *
 
 import map
 import game
+import menu
 import buffs
+import mines
 import economy
 import builder
 import supplies
@@ -11,7 +13,9 @@ import resources
 
 reload(map)
 reload(game)
+reload(menu)
 reload(buffs)
+reload(mines)
 reload(economy)
 reload(builder)
 reload(supplies)
@@ -19,7 +23,9 @@ reload(resources)
 
 from map import *
 from game import *
+from menu import *
 from buffs import *
+from mines import *
 from economy import *
 from builder import *
 from supplies import *
@@ -31,9 +37,8 @@ class MaintenanceException(Exception):
 
 class Maintenance:
 
-    def __init__(self, game):
-        self.game = game
-        
+    def __init__(self):
+        self.game = Game()
         self.map = Map()
         self.menu = Menu()
         self.economy = Economy()
@@ -58,10 +63,7 @@ class Maintenance:
 
 
 if __name__ == '__main__':
-    m = Maintenance(Map(), Queue(), Economy())
-    s = SCREEN
-    m.rebuildWells(s)
-    m.rebuildFields(s)
-    m.checkMines(s)
+    m = Maintenance()
+    m.scanMap()
 
     
