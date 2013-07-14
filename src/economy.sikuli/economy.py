@@ -1,14 +1,14 @@
 
 from sikuli.Sikuli import *
 
-import building
 import comodity
+import production
 
-reload(building)
 reload(comodity)
+reload(production)
 
-from building import *
 from comodity import *
+from production import *
 
 #
 # Economy class provides fluent interface. Usage example:
@@ -49,14 +49,11 @@ class Economy:
     # name and position of comodity for OCR
     comodity = 0
 
-    # currently selected building name 
-    building = ""
-
     # economy window state
     opened = 0
-    inProduction = 0
 
     def __init__(self):
+        self.prod = Production(self)
         self.open()
         self.closeAllMenus()
         self.close()
@@ -76,6 +73,7 @@ class Economy:
             print("closing Economy")
             wait(self.menuDelay)
         self.opened = 0
+        self.prod.opened = 0
         
     # menus ---------------------------------------------------------------
 
@@ -96,7 +94,7 @@ class Economy:
     def scrollToBottom(self):
         bottom = exists(Pattern("scrollBarBottom.png").exact(), 0)
         if bottom:
-            dragDrop(bottom, "scrollBarArrowDown.png")
+            dragDrop(bottom, Pattern("scrollBarArrowDown.png").exact())
             print("scroll to bottom")
         self.scroll = 3
     
@@ -200,6 +198,17 @@ class Economy:
         self.scroll = page
 
         print("open materials")
+
+    def production(self, number = 1):
+        try:
+            self.prod.open(number)
+        except FindFailed:
+            pass
+        
+        return self.prod
+
+    #def selectBuilding(self, number = 1):
+    #    return self.prod.selectBuilding(number)
     
     # building materials ----------------------------------------------------
         
@@ -208,7 +217,7 @@ class Economy:
         loc = find(Pattern("pineBoard.png").exact())
         click(loc)
         self.comodity = Comodity("PineWood", loc)
-        self.building = "PineWoodSawmill"
+        self.prod.building = "PineWoodSawmill"
         return self
 
     def HardBoards(self):
@@ -216,7 +225,7 @@ class Economy:
         loc = find(Pattern("hardBoard.png").exact())
         click(loc)
         self.comodity = Comodity("HardWood", loc)
-        self.building = "HardWoodSawmill"
+        self.prod.building = "HardWoodSawmill"
         return self
 
     def ExoticBoards(self):
@@ -224,7 +233,7 @@ class Economy:
         loc = find(Pattern("exoticBoard.png").exact())
         click(loc)
         self.comodity = Comodity("ExoticWood", loc)
-        self.building = "ExoticWoodSawmill"
+        self.prod.building = "ExoticWoodSawmill"
         return self
 
     def Tools(self):
@@ -232,7 +241,7 @@ class Economy:
         loc = find(Pattern("tool.png").exact())
         click(loc)
         self.comodity = Comodity("Tools", loc)
-        self.building = "ToolMaker"
+        self.prod.building = "ToolMaker"
         return self
 
     def Coins(self):
@@ -240,7 +249,7 @@ class Economy:
         loc = find(Pattern("coins.png").exact())
         click(loc)
         self.comodity = Comodity("Coins", loc)
-        self.building = "Coinage"
+        self.prod.building = "Coinage"
         return self
 
     def Stone(self):
@@ -248,7 +257,7 @@ class Economy:
         loc = find(Pattern("stone.png").exact())
         click(loc)
         self.comodity = Comodity("Stone", loc)
-        self.building = "StoneMason"
+        self.prod.building = "StoneMason"
         return self
 
     def Marble(self):
@@ -256,7 +265,7 @@ class Economy:
         loc = find(Pattern("marble.png").exact())
         click(loc)
         self.comodity = Comodity("Marble", loc)
-        self.building = "MarbleMason"
+        self.prod.building = "MarbleMason"
         return self
 
     # food ------------------------------------------------------------------
@@ -266,7 +275,7 @@ class Economy:
         loc = find(Pattern("fish.png").exact())
         click(loc)
         self.comodity = Comodity("Fish", loc)
-        self.building = "Fisherman"
+        self.prod.building = "Fisherman"
         return self
 
     def Beer(self):
@@ -274,7 +283,7 @@ class Economy:
         loc = find(Pattern("beer.png").exact())
         click(loc)
         self.comodity = Comodity("Beer", loc)
-        self.building = "Brewery"
+        self.prod.building = "Brewery"
         return self
 
     def Sausages(self):
@@ -282,7 +291,7 @@ class Economy:
         loc = find(Pattern("sausage.png").exact())
         click(loc)
         self.comodity = Comodity("Sausage", loc)
-        self.building = "Butcher"
+        self.prod.building = "Butcher"
         return self
 
     def Bread(self):
@@ -290,7 +299,7 @@ class Economy:
         loc = find(Pattern("bread.png").exact())
         click(loc)
         self.comodity = Comodity("Bread", loc)
-        self.building = "Bakery"
+        self.prod.building = "Bakery"
         return self
 
     # weapons ---------------------------------------------------------------
@@ -300,7 +309,7 @@ class Economy:
         loc = find(Pattern("horse.png").exact())
         click(loc)
         self.comodity = Comodity("Horses", loc)
-        self.building = "Stable"
+        self.prod.building = "Stable"
         return self
 
     def BronzeSwords(self):
@@ -308,7 +317,7 @@ class Economy:
         loc = find(Pattern("bronzeSword.png").exact())
         click(loc)
         self.comodity = Comodity("BronzeWeapons", loc)
-        self.building = "BronzeWeaponSmith"
+        self.prod.building = "BronzeWeaponSmith"
         return self
 
     def IronSwords(self):
@@ -316,7 +325,7 @@ class Economy:
         loc = find(Pattern("ironSword.png").exact())
         click(loc)
         self.comodity = Comodity("IronWeapons", loc)
-        self.building = "IronWeaponSmith"
+        self.prod.building = "IronWeaponSmith"
         return self
 
     def SteelSwords(self):
@@ -325,7 +334,7 @@ class Economy:
         click(loc)
         click(Pattern("steelSword2.png").exact())
         self.comodity = Comodity("SteelWeapons", loc)
-        self.building = "SteelWeaponSmith"
+        self.prod.building = "SteelWeaponSmith"
         return self
 
     def DamasceneSwords(self):
@@ -333,7 +342,7 @@ class Economy:
         loc = find(Pattern("damasceneSword.png").exact())
         click(loc)
         self.comodity = Comodity("DamasceneWeapons", loc)
-        self.building = "DamasceneWeaponSmith"
+        self.prod.building = "DamasceneWeaponSmith"
         return self
 
     def Bows(self):
@@ -341,7 +350,7 @@ class Economy:
         loc = find(Pattern("bow.png").exact())
         click(loc)
         self.comodity = Comodity("Bows", loc)
-        self.building = "BowMaker"
+        self.prod.building = "BowMaker"
         return self
 
     def LongBows(self):
@@ -350,7 +359,7 @@ class Economy:
         click(loc)
         click(Pattern("longBow2.png").exact())
         self.comodity = Comodity("LongBows", loc)
-        self.building = "LongBowMaker"
+        self.prod.building = "LongBowMaker"
         return self
 
     def CrossBows(self):
@@ -358,7 +367,7 @@ class Economy:
         loc = find(Pattern("crossBow.png").exact())
         click(loc)
         self.comodity = Comodity("CrossBows", loc)
-        self.building = "CrossBowMaker"
+        self.prod.building = "CrossBowMaker"
         return self
 
     def Cannons(self):
@@ -367,7 +376,7 @@ class Economy:
         click(loc)
         click(Pattern("cannon2.png").exact())
         self.comodity = Comodity("Cannons", loc)
-        self.building = "CannonForge"
+        self.prod.building = "CannonForge"
         return self
 
     # science ----------------------------------------------------------------
@@ -377,7 +386,7 @@ class Economy:
         loc = find(Pattern("simplePaper.png").exact())
         click(loc)
         self.comodity = Comodity("SimplePaper", loc)
-        self.building = "SimplePaperMill"
+        self.prod.building = "SimplePaperMill"
         return self
 
     def IntermediatePaper(self):
@@ -385,7 +394,7 @@ class Economy:
         loc = find(Pattern("intermediatePaper.png").exact())
         click(loc)
         self.comodity = Comodity("IntermediatePaper", loc)
-        self.building = "IntermediatePaperMill"
+        self.prod.building = "IntermediatePaperMill"
         return self
 
     def AdvancedPaper(self):
@@ -393,7 +402,7 @@ class Economy:
         loc = find(Pattern("advancedPaper.png").exact())
         click(loc)
         self.comodity = Comodity("AdvancedPaper", loc)
-        self.building = "AdvancedPaperMill"
+        self.prod.building = "AdvancedPaperMill"
         return self
 
     def Pens(self):
@@ -401,7 +410,7 @@ class Economy:
         loc = find(Pattern("pen.png").exact())
         click(loc)
         self.comodity = Comodity("Pens", loc)
-        self.building = "FineSmith"
+        self.prod.building = "FineSmith"
         return self
 
     def Letters(self):
@@ -409,7 +418,7 @@ class Economy:
         loc = find(Pattern("letter.png").exact())
         click(loc)
         self.comodity = Comodity("Letters", loc)
-        self.building = "LetterSmith"
+        self.prod.building = "LetterSmith"
         return self
 
     def Ornaments(self):
@@ -417,7 +426,7 @@ class Economy:
         loc = find(Pattern("ornament.png").exact())
         click(loc)
         self.comodity = Comodity("Ornaments", loc)
-        self.building = "OrnamentSmith"
+        self.prod.building = "OrnamentSmith"
         return self
 
     # materials --------------------------------------------------------------
@@ -427,7 +436,7 @@ class Economy:
         loc = find(Pattern("pineWood.png").exact())
         click(loc)
         self.comodity = Comodity("PineWood", loc)
-        self.building = "PineWoodCutter"
+        self.prod.building = "PineWoodCutter"
         return self
 
     def HardWood(self):
@@ -435,7 +444,7 @@ class Economy:
         loc = find(Pattern("hardWood.png").exact())
         click(loc)
         self.comodity = Comodity("HardWood", loc)
-        self.building = "HardWoodCutter"
+        self.prod.building = "HardWoodCutter"
         return self
         
     def ExoticWood(self):
@@ -443,7 +452,7 @@ class Economy:
         loc = find(Pattern("exoticWood.png").exact())
         click(loc)
         self.comodity = Comodity("ExoticWood", loc)
-        self.building = ""
+        self.prod.building = ""
         return self
 
     def PineTrees(self):
@@ -451,7 +460,7 @@ class Economy:
         click(Pattern("pineWood.png").exact())
         click("pineTree.png")
         self.comodity = 0
-        self.building = "PineWoodForrester"
+        self.prod.building = "PineWoodForrester"
         return self
 
     def HardTrees(self):
@@ -459,7 +468,7 @@ class Economy:
         click(Pattern("hardWood.png").exact())
         click("pineTree.png")
         self.comodity = 0
-        self.building = "HardWoodForrester"
+        self.prod.building = "HardWoodForrester"
         return self
 
     def ExoticTrees(self):
@@ -467,7 +476,7 @@ class Economy:
         click(Pattern("exoticWood.png").exact())
         click("pineTree.png")
         self.comodity = 0
-        self.building = ""
+        self.prod.building = ""
         return self
 
     def Coal(self):
@@ -475,7 +484,7 @@ class Economy:
         loc = find(Pattern("coal.png").exact())
         click(loc)
         self.comodity = Comodity("Coal", loc)
-        self.building = "CoalMine"
+        self.prod.building = "CoalMine"
         return self
 
     def CopperOre(self):
@@ -483,7 +492,7 @@ class Economy:
         loc = find(Pattern("copperOre.png").exact())
         click(loc)
         self.comodity = Comodity("CopperOre", loc)
-        self.building = "CoperMine"
+        self.prod.building = "CoperMine"
         return self
 
     def Copper(self):
@@ -491,7 +500,7 @@ class Economy:
         loc = find(Pattern("copper.png").exact())
         click(loc)
         self.comodity = Comodity("Copper", loc)
-        self.building = "CopperSmelter"
+        self.prod.building = "CopperSmelter"
         return self
 
     def IronOre(self):
@@ -499,7 +508,7 @@ class Economy:
         loc = find(Pattern("ironOre.png").exact())
         click(loc)
         self.comodity = Comodity("IronOre", loc)
-        self.building = "IronMine"
+        self.prod.building = "IronMine"
         return self
 
     def Iron(self):
@@ -507,7 +516,7 @@ class Economy:
         loc = find(Pattern("iron.png").exact())
         click(loc)
         self.comodity = Comodity("Iron", loc)
-        self.building = "IronSmelter"
+        self.prod.building = "IronSmelter"
         return self
 
     def Steel(self):
@@ -515,7 +524,7 @@ class Economy:
         loc = find(Pattern("steel.png").exact())
         click(loc)
         self.comodity = Comodity("Steel", loc)
-        self.building = "SteelSmelter"
+        self.prod.building = "SteelSmelter"
         return self
 
     def GoldOre(self):
@@ -523,7 +532,7 @@ class Economy:
         loc = find(Pattern("goldOre.png").exact())
         click(loc)
         self.comodity = Comodity("GoldOre", loc)
-        self.building = "GoldMine"
+        self.prod.building = "GoldMine"
         return self
 
     def Gold(self):
@@ -531,7 +540,7 @@ class Economy:
         loc = find(Pattern("gold.png").exact())
         click(loc)
         self.comodity = Comodity("Gold", loc)
-        self.building = "GoldSmelter"
+        self.prod.building = "GoldSmelter"
         return self
 
     def TitanOre(self):
@@ -539,7 +548,7 @@ class Economy:
         loc = find(Pattern("titanOre.png").exact())
         click(loc)
         self.comodity = Comodity("TitanOre", loc)
-        self.building = ""
+        self.prod.building = ""
         return self
 
     def Titan(self):
@@ -547,7 +556,7 @@ class Economy:
         loc = find(Pattern("titan.png").exact())
         click(loc)
         self.comodity = Comodity("Titan", loc)
-        self.building = "TitanSmelter"
+        self.prod.building = "TitanSmelter"
         return self
 
     def Saltpeter(self):
@@ -555,7 +564,7 @@ class Economy:
         loc = find(Pattern("saltpeter.png").exact())
         click(loc)
         self.comodity = Comodity("Saltpeter", loc)
-        self.building = ""
+        self.prod.building = ""
         return self
 
     def GunPowder(self):
@@ -563,7 +572,7 @@ class Economy:
         loc = find(Pattern("gunPowder.png").exact())
         click(loc)
         self.comodity = Comodity("GunPowder", loc)
-        self.building = "PowderHut"
+        self.prod.building = "PowderHut"
         return self
 
     def Granite(self):
@@ -571,7 +580,7 @@ class Economy:
         loc = find(Pattern("granite.png").exact())
         click(loc)
         self.comodity = Comodity("Granite", loc)
-        self.building = ""
+        self.prod.building = ""
         return self
 
     def Water(self):
@@ -579,7 +588,7 @@ class Economy:
         loc = find(Pattern("water.png").exact())
         click(loc)
         self.comodity = Comodity("Water", loc)
-        self.building = "Well"
+        self.prod.building = "Well"
         return self
 
     def Wheat(self):
@@ -587,7 +596,7 @@ class Economy:
         loc = find(Pattern("wheat.png").exact())
         click(loc)
         self.comodity = Comodity("Wheat", loc)
-        self.building = "Field"
+        self.prod.building = "Field"
         return self
 
     def Meat(self):
@@ -595,7 +604,7 @@ class Economy:
         loc = find(Pattern("meat.png").exact())
         click(loc)
         self.comodity = Comodity("Meat", loc)
-        self.building = "Hunter"
+        self.prod.building = "Hunter"
         return self
 
     def Flour(self):
@@ -603,7 +612,7 @@ class Economy:
         loc = find(Pattern("flour.png").exact())
         click(loc)
         self.comodity = Comodity("Flour", loc)
-        self.building = "Mill"
+        self.prod.building = "Mill"
         return self
 
     def Wheels(self):
@@ -611,7 +620,7 @@ class Economy:
         loc = find(Pattern("wheel.png").exact())
         click(loc)
         self.comodity = Comodity("Wheels", loc)
-        self.building = "WheelMaker"
+        self.prod.building = "WheelMaker"
         return self
 
     def Carts(self):
@@ -619,89 +628,9 @@ class Economy:
         loc = find(Pattern("cart.png").exact())
         click(loc)
         self.comodity = Comodity("Carts", loc)
-        self.building = "Carpenter"
+        self.prod.building = "Carpenter"
         return self
 
-    # actions --------------------------------------------------------------
-    
-    def production(self, number = 1):
-        "opens production listing from the production chain view"
-        self.inProduction = 1
-        wait(self.menuDelay)
-        click(Pattern("comodityIconTopFrame.png").similar(0.95).targetOffset(-20,20))
-        if number == 1:
-            click(Pattern("production.png").exact().targetOffset(-37,36)) 
-        elif number == 2:
-            click(Pattern("production.png").exact().targetOffset(-36,87))
-            if self.building == "CoalMine":
-                self.building = "CharcoalBurner"
-        elif number == 3:
-            click(Pattern("production.png").exact().targetOffset(-38,134))
-        print("open production")
-        return self
-
-    def selectBuilding(self, number):
-        "selects N-th building in the production list, returns Building object or 0 if there is none"
-        try:
-            if not self.inProduction:
-                self.production()
-            
-            if number == 1:
-                location = find(Pattern("productionTopBorder.png").exact().targetOffset(-31,48))
-            elif number == 2:
-                location = find(Pattern("productionTopBorder.png").exact().targetOffset(-31,100))
-            elif number == 3:
-                location = find(Pattern("productionTopBorder.png").exact().targetOffset(-30,154))
-            elif number == 4:
-                location = find(Pattern("productionTopBorder.png").exact().targetOffset(-32,201))
-            elif number == 5:
-                location = find(Pattern("productionTopBorder.png").exact().targetOffset(-32,250))
-            else:
-                arrow = exists(Pattern("productionScrollBarDownArrow.png").exact())
-                if arrow:
-                    location = find(Pattern("productionTopBorder.png").exact().targetOffset(-32,250))
-                    # scroll down
-                    n = 5
-                    while n < number:
-                        # test if there is other building in list
-                        if (number - n == 1):
-                            end = exists(Pattern("productionScrollBarAtBottom.png").exact(), 0)
-                            if end:
-                                # no other building
-                                self.close()
-                                return 0
-                        n = n + 1
-                        click(arrow)
-                else:
-                    # no scroll bar - no building
-                    self.close()
-                    return 0
-
-        # when comodity has no production
-        except FindFailed:
-            self.close()
-            return 0
-                
-        # check if there is actually some building at the location
-        if number < 6 and location:
-            print("testing slot")
-            target = location.getTarget()
-            region = Region(target.x - 20, target.y - 20, 40, 40)
-            #region.highlight()
-            if region.exists(Pattern("emptySlot.png").exact(), 0):
-                # the building slot is empty
-                self.close()
-                return 0
-
-        # select it, finally!
-        if location:
-            click(location)
-            print("building selected")
-
-        self.inProduction = 0
-        wait(self.menuDelay)
-        return Building(self.building)
-    
 
 if __name__ == '__main__':
     e = Economy()
@@ -714,8 +643,10 @@ if __name__ == '__main__':
     #stable = e.Horses().selectBuilding(1)
     #print(stable)
     #stable.getBuffTimeout()
-    c = e.Horses().comodity
-    print(c.getTrend())
-    c.getAmount()
+    c = e.PineWood().selectBuilding(9)
+    #c = e.Meat().production()
+    #print(c.getTrend())
+    #c.getAmount()
+    #e.getProductionBuffRate()
             
         

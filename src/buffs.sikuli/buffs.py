@@ -79,15 +79,21 @@ class Buffs:
     def buffComodity(self, comodity):
         print(comodity)
         selectComodity = getattr(self.economy, comodity)
-        n = 1
+        n = 0
         building = 1
         while building:
+            n += 1
             selectComodity()
-            building = self.economy.selectBuilding(n)
-            if building and not building.isBuffed():
-                self.menu.FishPlate()
-                building.click()
-            n = n + 1
+            building = self.economy.production().selectBuffableBuilding(n)
+            if not building:
+                break
+            if building.isBuffed():
+                continue
+            if building.isPaused():
+                continue
+            self.menu.FishPlate()
+            building.click()
+            
 
 
 if __name__ == '__main__':
@@ -103,5 +109,7 @@ if __name__ == '__main__':
     
     b = Buffs(Menu(), Economy(), Supplies())
     b.buffGroup("materials")
+    #b.buffEverything()
+    
 
     

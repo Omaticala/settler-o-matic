@@ -31,7 +31,10 @@ class Building:
 
     def isRunning(self):
         return exists(Pattern("pauseButton.png").exact(), 0)
-        
+
+    def isPaused(self):
+        return not self.isRunning()
+    
     def isBuffed(self):
         #wait(1)
         sandwich = exists("sandwich.png", 0)
