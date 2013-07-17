@@ -635,18 +635,8 @@ class Economy:
 if __name__ == '__main__':
     e = Economy()
     e.open()
-    #print(e.Wheat().selectBuilding(11))
-    #print(e.Wheat().selectBuilding(12))
-    #print(e.HardBoards().selectBuilding(2))
-    #print(e.Pens().selectBuilding(1)) 
-    #print(e.Pens().selectBuilding(2))
-    #stable = e.Horses().selectBuilding(1)
-    #print(stable)
-    #stable.getBuffTimeout()
-    c = e.PineWood().selectBuilding(9)
-    #c = e.Meat().production()
-    #print(c.getTrend())
-    #c.getAmount()
-    #e.getProductionBuffRate()
-            
+    
+    c = e.HardWood().production().countBuildings()
+    
+    print(c)
         

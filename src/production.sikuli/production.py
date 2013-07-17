@@ -15,13 +15,16 @@ from building import *
 class Production:
 
     opened = 0
-    last = 0
+    
     defaultIconLocation = 0
     irregularIconLocations = ["SteelWeaponSmith", "CannonForgery", "Carpenter"]
 
     # currently selected building name 
     building = ""
 
+    # buildings counts
+    counts = {}
+    
     # number of buildings to skip
     skip = 0
     skipName = ""
@@ -118,9 +121,7 @@ class Production:
         # check if there is actually some building at the location
         if number < 6 and location:
             print("testing slot")
-            target = location.getTarget()
-            region = Region(target.x - 20, target.y - 20, 40, 40)
-            if region.exists(Pattern("emptySlot.png").exact(), 0):
+            if self.isEmpty(location):
                 # the building slot is empty
                 print("slot is empty")
                 return 0
@@ -156,7 +157,7 @@ class Production:
                 # test if there is other building in list
                 if (n == number - 1):
                     wait(0.3)
-                    end = exists(Pattern("productionScrollBarAtBottom.png").exact(), 0)
+                    end = not exists(Pattern("buildingsScrollbarBottomArrow.png").exact(), 0)
                     if end:
                         # no other building
                         return 0
@@ -164,6 +165,12 @@ class Production:
                 click(arrow)
         return location
 
+    def isEmpty(self, location):
+        print("isEmpty")
+        target = location.getTarget()
+        region = Region(target.x - 20, target.y - 20, 40, 40)
+        return region.exists(Pattern("emptySlot.png").exact(), 0)
+        
     def isPaused(self, location):
         print("isPaused")
         target = location.getTarget()
@@ -176,13 +183,48 @@ class Production:
         region = Region(target.x - 30, target.y - 30, 60, 60)
         return region.exists(Pattern("2xStar.png").similar(0.50), 0)
 
-    def countBuildings():
+    def countBuildings(self):
         "count all production buildings"
-        pass
-
-    def countBuffedBuildings():
-        pass
-
-    def countNotBuffedBuildings():
-        pass
-
+        if self.building in self.counts:
+            return self.counts[self.building]
+        
+        wait(0.1)
+        arrow = exists(Pattern("productionScrollBarDownArrow.png").exact(), 0)
+        # no scroll bar, count buildings on first page
+        if not arrow:
+            location = self.locateOnFirstPage(2)
+            if self.isEmpty(location):
+                location = self.locateOnFirstPage(1)
+                if self.isEmpty(location):
+                    count = 0
+                else:
+                    count = 1
+            else:
+                location = self.locateOnFirstPage(4)
+                if self.isEmpty(location):
+                    location = self.locateOnFirsPage(3)
+                    if self.isEmpty(location):
+                        count = 2
+                    else:
+                        count = 3
+                else:
+                    location = self.locateOnFirstPage(5)
+                    if self.isEmpty(location):
+                        count = 4
+                    else:
+                        count = 5
+        # scroll down to count buildings
+        else:
+            count = 6
+            while count < 100:
+                click(arrow)
+                wait(0.1)
+                end = not exists(Pattern("buildingsScrollbarBottomArrow.png").exact(), 0)
+                if end:
+                    break
+                count += 1
+        top = exists(Pattern("topArrow.png").similar(0.90).targetOffset(-1,8))
+        if top:
+            dragDrop(Pattern("scrollbarTop.png").similar(0.90).targetOffset(-4,3), top)
+        self.counts[self.building] = count
+        return count
