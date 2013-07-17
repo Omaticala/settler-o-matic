@@ -1,20 +1,6 @@
 
 from sikuli.Sikuli import *
 
-#import map
-#import economy
-#import maintenance
-
-#reload(map)
-#reload(queue)
-#reload(economy)
-#reload(maintenance)
-
-#from map import *
-#from queue import *
-#from economy import *
-#from maintenance import *
-
 
 class GameException(Exception):
     pass
@@ -91,7 +77,4 @@ def closeDialog():
     if cross:
         click(cross)
         
-
-if __name__ == '__main__':
-    g = Game()
     

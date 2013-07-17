@@ -1,25 +1,13 @@
 
 from sikuli.Sikuli import *
 
-import menu
-import queue
-import builder
-
-reload(menu)
-reload(queue)
-reload(builder)
-
-from menu import *
-from queue import *
-from builder import *
-
 
 class Mines:
 
-    def __init__(self):
-        self.menu = Menu()
-        self.queue = Queue()
-        self.builder = Builder()
+    def __init__(self, menu, queue, builder):
+        self.menu = menu
+        self.queue = queue
+        self.builder = builder
 
     def checkMines(self, region):
         "check depleted mines and queue them for rebuilding"

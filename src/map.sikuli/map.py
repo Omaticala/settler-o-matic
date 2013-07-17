@@ -183,10 +183,4 @@ class Map:
     def doScan(self, callback):
         callback(self.region)
 
-
-
-if __name__ == '__main__':
-    Settings.MoveMouseDelay = 1 # half speed
-    m = Map()
-    #m.scanMap()
     

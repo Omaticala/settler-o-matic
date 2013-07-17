@@ -228,3 +228,4 @@ class Production:
             dragDrop(Pattern("scrollbarTop.png").similar(0.90).targetOffset(-4,3), top)
         self.counts[self.building] = count
         return count
+

@@ -631,12 +631,4 @@ class Economy:
         self.prod.building = "Carpenter"
         return self
 
-
-if __name__ == '__main__':
-    e = Economy()
-    e.open()
-    
-    c = e.HardWood().production().countBuildings()
-    
-    print(c)
         

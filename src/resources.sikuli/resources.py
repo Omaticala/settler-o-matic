@@ -91,15 +91,4 @@ class Resources:
             if n > 3:
                 raise MaintenanceException("Cannot open building.")
 
-
-if __name__ == '__main__':
-    import supplies
-    import builder
-    reload(supplies)
-    reload(builder)
-    from supplies import *
-    from builder import *
-    
-    r = Resources(Builder(), Supplies())
-    r.checkRegion(SCREEN)
     

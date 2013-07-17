@@ -9,7 +9,7 @@ class Buffs:
         "buildMat": {
             "PineBoards": 1,
             "HardBoards": 1,
-            "ExoticBoards": 1,
+            "ExoticBoards": 0,
             "Tools": 1,
             "Coins": 1,
             "Stone": 1,
@@ -26,46 +26,47 @@ class Buffs:
             "BronzeSwords": 1,
             "IronSwords": 1,
             "SteelSwords": 1,
-            "DamasceneSwords": 1,
+            "DamasceneSwords": 0,
             "Bows": 1,
             "LongBows": 1,
-            "CrossBows": 1,
-            "Cannons": 1,
+            "CrossBows": 0,
+            "Cannons": 0,
         },
         "science": {
             "SimplePaper": 1,
             "IntermediatePaper": 1,
+            "AdvancedPaper": 0,
             "Pens": 1,
             "Letters": 1,
-            "Ornaments": 1,
+            "Ornaments": 0,
         }, 
         "materials": {
             "PineWood": 1,
             "HardWood": 1,
-            "PineTrees": 1,
-            "HardTrees": 1,
+            "PineTrees": 0,
+            "HardTrees": 0,
             "Coal": 1, # two types of buildings!
             "CopperOre": 1,
             "Copper": 1,
             "IronOre": 1,
             "Iron": 1,
-            "Steel": 1,
+            "Steel": 0,
             "GoldOre": 1,
             "Gold": 1,
-            "Titan": 1,
-            "GunPowder": 1,
+            "Titan": 0,
+            "GunPowder": 0,
             "Water": 0,
             "Meat": 1,
             "Flour": 1,
-            "Wheels": 1,
-            "Carts": 1,
+            "Wheels": 0,
+            "Carts": 0,
         }
     }
 
-    def __init__(self, menu, economy, supplies):
+    def __init__(self, menu, economy):
         self.menu = menu
         self.economy = economy
-        self.supplies = supplies
+        #self.supplies = supplies
 
     def buffEverything(self):
         for group in self.comodities:
@@ -93,23 +94,6 @@ class Buffs:
                 continue
             self.menu.FishPlate()
             building.click()
-            
-
-
-if __name__ == '__main__':
-    import menu
-    import economy
-    import supplies
-    reload(menu)
-    reload(economy)
-    reload(supplies)
-    from menu import *
-    from economy import *
-    from supplies import *
-    
-    b = Buffs(Menu(), Economy(), Supplies())
-    b.buffGroup("materials")
-    #b.buffEverything()
     
 
     

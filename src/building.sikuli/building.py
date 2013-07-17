@@ -75,10 +75,4 @@ class Building:
         print(time)
         return time
 
-
-if __name__ == '__main__':
-    b = Building("Stable")
-    b.getLevel()
-    b.getBuffTimeout()
-    b.getProductionTime()
         
