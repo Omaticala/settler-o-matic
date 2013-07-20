@@ -79,23 +79,23 @@ class Economy:
 
     def scrollToTop(self):
         top = exists(Pattern("scrollbarTop-1.png").exact(), 0)
+        print("scroll to top: " + str(bool(top)))
         if top:
             dragDrop(top, Pattern("scrollBarTopArrow.png").similar(0.80))
-            print("scroll to top")
         self.scroll = 1
 
     def scrollToMiddle(self):
-        top = exists(Pattern("scrollbarTop-1.png").exact(), 0)
+        top = exists(Pattern("scrollbarTop-1.png").similar(0.90), 0)
+        print("scroll to middle: " + str(bool(top)))
         if top:
             dragDrop(top, Pattern("scrollBarBottom.png").exact())
-            print("scroll to middle")
         self.scroll = 2
             
     def scrollToBottom(self):
         bottom = exists(Pattern("scrollBarBottom.png").exact(), 0)
+        print("scroll to bottom: " + str(bool(bottom)))
         if bottom:
             dragDrop(bottom, Pattern("scrollBarArrowDown.png").exact())
-            print("scroll to bottom")
         self.scroll = 3
     
     def closeAllMenus(self):
@@ -135,51 +135,57 @@ class Economy:
 
     def openBuildingMaterialsMenu(self):
         self.open()
-        if self.menu != "buildmat":
+        closed = self.menu != "buildmat"
+        print("open buildmat: " + str(closed))
+        if closed:
             self.closeCurrentMenu()
             button = find(Pattern("buildingMaterialsMenu.png").exact())
             click(button)
             wait(self.menuDelay)
             self.button = button
             self.menu = "buildmat"
-            print("open buildmat")
 
     def openFoodMenu(self):
         self.open()
-        if self.menu != "food":
+        closed = self.menu != "food"
+        print("open food: " + str(closed))
+        if closed:
             self.closeCurrentMenu()
             button = find(Pattern("foodMenu.png").exact())
             click(button)
             wait(self.menuDelay)
             self.button = button
             self.menu = "food"
-            print("open food")
 
     def openWeaponsMenu(self):
         self.open()
-        if self.menu != "weapons":
+        closed = self.menu != "weapons"
+        print("open weapons: " + str(closed))
+        if closed:
             self.closeCurrentMenu()
             button = find(Pattern("weaponsMenu.png").exact())
             click(button)
             wait(self.menuDelay)
             self.button = button
             self.menu = "weapons"
-            print("open weapons")
 
     def openScienceMenu(self):
         self.open()
-        if self.menu != "science":
+        closed = self.menu != "science"
+        print("open science: " + str(closed))
+        if closed:
             self.closeCurrentMenu()
             button = find(Pattern("scienceMenu.png").exact())
             click(button)
             wait(self.menuDelay)
             self.button = button
             self.menu = "science"
-            print("open science")
 
     def openMaterialsMenu(self, page):
         self.open()
-        if self.menu != "materials":
+        closed = self.menu != "materials"
+        print("open materials: " + str(closed))
+        if closed:
             self.closeCurrentMenu()
             button = find(Pattern("materialsMenu-1.png").exact())
             click(button)
@@ -192,12 +198,11 @@ class Economy:
         if page == 1:
             self.scrollToTop()
         elif page == 2:
+            self.scrollToTop()
             self.scrollToMiddle()
         elif page == 3:
             self.scrollToBottom()
         self.scroll = page
-
-        print("open materials")
 
     def production(self, number = 1):
         try:
@@ -357,7 +362,6 @@ class Economy:
         close = self.openWeaponsMenu()
         loc = find(Pattern("longBow.png").exact())
         click(loc)
-        click(Pattern("longBow2.png").exact())
         self.comodity = Comodity("LongBows", loc)
         self.prod.building = "LongBowMaker"
         return self

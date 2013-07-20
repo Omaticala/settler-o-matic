@@ -44,29 +44,37 @@ from production import *
 from maintenance import *
 
 #
-# maintenance     main automation script
-#  + game         browser and game window and settings
-#  + map          navigation on game map
-#  + menu         main menu (specialist, buffs, resources)
-#  + economy      economy menu
-#    + building   represents a single building on the map
-#    + comodity   represents a single product in the economy menu
-#  + resources    rebuilds fields and wells, feeds fish and deers
-#    - builder    constructing new buildings
-#    - supplies   creating buffs and resources
-#  + buffs        buffs buildings
-#    - menu       ... (for buffing)
-#    - economy    ... (for opening buildings)
-#    - supplies   ... (for creating buffs)
-#  + mines        checks and rebuilds mines and quaries
-#    - menu       ... (for finding mines)
-#    + queue      ... (for planning)
-#    - builder    ... (for re-building mines)
+# common:
+# - Gui          user interface window
+# - Game         browser and game window and settings
+# - Map          navigation on game map
+# - Queue        queue for planned tasks
+#
+# automation:
+# - Maintenance  main automation script
+# - Resources    rebuilds fields and wells, feeds fish and deers
+# - Supplies     creating buffs and resources in supplies building
+# - Buffs        buffs buildings
+# - Mines        checks and rebuilds mines and quaries
+# 
+# game menus:
+# - Menu         main menu (specialist, buffs, resources)
+# - Builder      constructing new buildings
+# - Economy      economy menu
+#   - Comodity   represents a single product in the economy menu
+#   - Production production buildings submenu of economy
+#     - Building represents a single building on the map (selected via Production menu)
+#
+# yet not used:
+# - Adventure
+# - Merchant
+#
+# obsolete:
+# - Finder       (replaced with Buffs)
+#
 
-g = Game()
-
-# service locator
 class Container:
+    "service locator"
 
     gui = 0
     map = 0
@@ -78,7 +86,6 @@ class Container:
     economy = 0
     supplies = 0
     resources = 0
-    #production = 0
     maintenance = 0
 
     
@@ -104,7 +111,7 @@ class Container:
 
     def Buffs(self):
         if not self.buffs:
-            self.buffs = Buffs(self.Menu(), self.Economy())
+            self.buffs = Buffs(self.Menu(), self.Economy(), self.Game())
         return self.buffs
 
     def Mines(self):
@@ -140,9 +147,14 @@ class Container:
 
 if __name__ == '__main__':
     c = Container()
-    e = c.Economy()
-    c = e.HardWood().production().countBuildings()
-    print(c)
+    #e = c.Economy()
+    #c.Economy().Steel().production().countBuildings()
+    #exit()
+    #print(c)
+    #wait(3600)
+    b = c.Buffs()
+    while 1:
+        b.buffEverything()
     
-
+    
     

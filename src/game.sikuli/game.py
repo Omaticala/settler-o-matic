@@ -9,7 +9,6 @@ class Game:
 
     def __init__(self):
         Settings.MoveMouseDelay = 0.25 # double speed
-        self.init()
 
     def init(self):
         "ensure game is running and has maximal viewport"

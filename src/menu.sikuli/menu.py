@@ -139,7 +139,7 @@ class Menu:
     def FishPlate(self):
         "selects Fish Plate, returns 1 if ok"
         self.Buffs()
-        plate = exists(Pattern("fishPlateButton.png").similar(0.90))
+        plate = exists(Pattern("fishPlate.png").similar(0.80))
         if plate:
             click(plate)
             return 1

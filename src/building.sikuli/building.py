@@ -4,9 +4,10 @@ from sikuli.Sikuli import *
 
 class Building:
 
-    def __init__(self, name = "unknown"):
+    def __init__(self, name = "unknown", next = 1):
         self.name = name
         self.location = Location(SCREEN.getW() / 2, 380)
+        self.hasNext = next
 
     def __repr__(self):
         return "Building: " + self.name

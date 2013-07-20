@@ -52,7 +52,7 @@ class Buffs:
             "Iron": 1,
             "Steel": 0,
             "GoldOre": 1,
-            "Gold": 1,
+            "Gold": 0,
             "Titan": 0,
             "GunPowder": 0,
             "Water": 0,
@@ -63,9 +63,10 @@ class Buffs:
         }
     }
 
-    def __init__(self, menu, economy):
+    def __init__(self, menu, economy, game):
         self.menu = menu
         self.economy = economy
+        game.goFullScreen()
         #self.supplies = supplies
 
     def buffEverything(self):
@@ -81,17 +82,14 @@ class Buffs:
         print(comodity)
         selectComodity = getattr(self.economy, comodity)
         n = 0
-        building = 1
-        while building:
+        next = 1
+        while next:
             n += 1
             selectComodity()
             building = self.economy.production().selectBuffableBuilding(n)
             if not building:
                 break
-            if building.isBuffed():
-                continue
-            if building.isPaused():
-                continue
+            next = building.hasNext
             self.menu.FishPlate()
             building.click()
     
