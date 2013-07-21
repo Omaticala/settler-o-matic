@@ -50,12 +50,13 @@ class Buffs:
             "Copper": 1,
             "IronOre": 1,
             "Iron": 1,
-            "Steel": 0,
+            "Steel": 1,
             "GoldOre": 1,
-            "Gold": 0,
+            "Gold": 0,            
             "Titan": 0,
             "GunPowder": 0,
             "Water": 0,
+            "Wheat": 1,
             "Meat": 1,
             "Flour": 1,
             "Wheels": 0,
@@ -91,6 +92,7 @@ class Buffs:
                 break
             next = building.hasNext
             self.menu.FishPlate()
+            wait(0.1)
             building.click()
     
 

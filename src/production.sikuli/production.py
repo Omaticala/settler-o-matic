@@ -85,7 +85,7 @@ class Production:
         print("skip: " + skip.__repr__())
         
         location = self.findBuilding(number + skip)
-        while location and (self.isBuffed(location) or self.isPaused(location)):
+        while location and (self.isBuffed(location)): # or self.isPaused(location)
             print("skipping")
             skip += 1
             location = self.findBuilding(number + skip)
@@ -103,7 +103,7 @@ class Production:
         self.opened = 0
         wait(0.3)
         count = self.countBuildings()
-        return Building(self.building, number + skip + 1 < count)
+        return Building(self.building, number + skip + 1 <= count)
 
     def findBuilding(self, number):
         print("findBuilding")
@@ -123,12 +123,12 @@ class Production:
             return 0
                 
         # check if there is actually some building at the location
-        if number < 6 and location:
-            print("testing slot")
-            if self.isEmpty(location):
-                # the building slot is empty
-                print("slot is empty")
-                return 0
+        #if number < 6 and location:
+        #    print("testing slot")
+        #    if self.isEmpty(location):
+        #        # the building slot is empty
+        #        print("slot is empty")
+        #        return 0
 
         return location
 
@@ -196,7 +196,9 @@ class Production:
             return self.counts[self.building]
         
         wait(0.1)
-        arrow = exists(Pattern("productionScrollBarDownArrow.png").exact(), 0)
+        #arrow = exists(Pattern("productionScrollBarDownArrow.png").exact(), 0)
+        arrow = exists(Pattern("scrollbarDownArrow.png").exact(), 0)
+        
         # no scroll bar, count buildings on first page
         if not arrow:
             location = self.locateOnFirstPage(2)
@@ -232,8 +234,10 @@ class Production:
                 count += 1
         top = exists(Pattern("topArrow.png").similar(0.90).targetOffset(-1,8))
         if top:
-            dragDrop(Pattern("scrollBarTop-1.png").similar(0.90).targetOffset(-3,1), top) 
+            #dragDrop(Pattern("scrollBarTop-1.png").similar(0.90).targetOffset(-3,1), top)
             #dragDrop(Pattern("scrollbarTop.png").similar(0.90).targetOffset(-4,3), top)
+            dragDrop(Pattern("scrollBarTop-2.png").similar(0.90).targetOffset(-2,2), top)
+            
         self.counts[self.building] = count
         print("count: " + count.__repr__())
         return count

@@ -85,7 +85,8 @@ class Economy:
         self.scroll = 1
 
     def scrollToMiddle(self):
-        top = exists(Pattern("scrollbarTop-1.png").similar(0.90), 0)
+        #top = exists(Pattern("scrollbarTop-1.png").similar(0.90), 0)
+        top = exists(Pattern("scrollBarTop.png").similar(0.93).targetOffset(-7,-1), 0)
         print("scroll to middle: " + str(bool(top)))
         if top:
             dragDrop(top, Pattern("scrollBarBottom.png").exact())
