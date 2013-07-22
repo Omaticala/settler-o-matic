@@ -5,10 +5,13 @@ from sikuli.Sikuli import *
 class Menu:
 
     tab = ""
+    starLocation = 0
     
     def open(self):
-        if not exists("dragonFace.png", 0):
-            click(Pattern("star.png").similar(0.90))
+        if not exists(Pattern("menuTop.png").similar(0.98), 0):
+            if not self.starLocation:
+                self.starLocation = find(Pattern("star.png").similar(0.90))
+            click(self.starLocation)
 
     def All(self):
         "opens 'all' menu"

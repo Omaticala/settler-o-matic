@@ -38,6 +38,8 @@ class EconomyException(Exception):
 class Economy:
     "Controls the Economy menu"
 
+    iconLocation = 0
+
     # wait for animation before next step
     menuDelay = 0.8
 
@@ -61,7 +63,9 @@ class Economy:
     def open(self):
         "open economy menu (if not opened already)"
         if not exists(Pattern("economyMenuHeader.png").similar(0.90), 0):
-            click(Pattern("economyIcon.png").similar(0.80))
+            if not self.iconLocation:
+                self.iconLocation = find(Pattern("economyIcon.png").similar(0.80))
+            click(self.iconLocation)
             print("opening Economy")
             wait(self.menuDelay)
         self.opened = 1

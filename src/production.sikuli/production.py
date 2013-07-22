@@ -232,7 +232,7 @@ class Production:
                 if end:
                     break
                 count += 1
-        top = exists(Pattern("topArrow.png").similar(0.90).targetOffset(-1,8))
+        top = exists(Pattern("topArrow.png").similar(0.90).targetOffset(-1,8), 0)
         if top:
             #dragDrop(Pattern("scrollBarTop-1.png").similar(0.90).targetOffset(-3,1), top)
             #dragDrop(Pattern("scrollbarTop.png").similar(0.90).targetOffset(-4,3), top)
