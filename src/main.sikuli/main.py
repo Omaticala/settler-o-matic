@@ -131,12 +131,12 @@ class Container:
 
     def Supplies(self):
         if not self.supplies:
-            self.supplies = Supplies()
+            self.supplies = Supplies(self.Economy())
         return self.supplies
 
     def Resources(self):
         if not self.resources:
-            self.resources = Resources()
+            self.resources = Resources(self.Builder(), self.Supplies(), self.Economy())
         return self.resources
 
     def Maintenance(self):
@@ -147,14 +147,18 @@ class Container:
 
 if __name__ == '__main__':
     c = Container()
-    #e = c.Economy()
+
     #c.Economy().Steel().production().countBuildings()
-    #exit()
-    #print(c)
-    #wait(3600)
-    b = c.Buffs()
+    #c.Resources().checkRegion(SCREEN)
+
+    #c.Supplies().open().makeFishPlate(25)
+    #c.Supplies().close()
+
     while 1:
-        b.buffEverything()
+        #try:
+            c.Buffs().buffEverything()
+        #except FindFailed:
+        #    print "ERROR -----------------------"
     
     
     

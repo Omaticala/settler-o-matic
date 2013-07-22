@@ -14,9 +14,10 @@ class Resources:
     # current region
     region = 0
 
-    def __init__(self, builder, supplies):
+    def __init__(self, builder, supplies, economy):
         self.builder = builder
         self.supplies = supplies
+        self.economy = economy
         self.callback = self.dummy
 
     def setCallback(self, callback):
@@ -91,4 +92,12 @@ class Resources:
             if n > 3:
                 raise MaintenanceException("Cannot open building.")
 
-    
+    def feedFish(self):
+        building = 1
+        number = 1
+        while building:
+            building = self.economy.Fish().selectBuilding(number)
+            building += 1
+
+
+        
