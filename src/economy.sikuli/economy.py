@@ -216,9 +216,6 @@ class Economy:
             pass
         
         return self.prod
-
-    #def selectBuilding(self, number = 1):
-    #    return self.prod.selectBuilding(number)
     
     # building materials ----------------------------------------------------
         
