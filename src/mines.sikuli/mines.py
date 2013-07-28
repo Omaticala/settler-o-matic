@@ -134,31 +134,39 @@ class Mines:
             return "copper42"
         if exists(Pattern("oldCopper43.png").similar(0.90)):
             return "copper43"
-        # iron41
-        # iron42
+        if exists(Pattern("oldIron41.png").similar(0.90)):
+            return "iron41"
+        if exists(Pattern("oldIron42.png").similar(0.90)):
+            return "iron42"
         # sector 5 ------------------
-        # iron51***
-        # iron52
-        # iron53
+        if exists(Pattern("oldIron51.png").similar(0.90)):
+            return "iron51"
+        if exists(Pattern("oldIron52.png").similar(0.90)):
+            return "iron52"
+        if exists(Pattern("oldIron53.png").similar(0.90)):
+            return "iron53"
         # sector 6 ------------------
         if exists(Pattern("oldIron61.png").similar(0.90)):
             return "iron61"
-        # iron62
+        if exists(Pattern("oldIron62.png").similar(0.90)):
+            return "iron62"
         if exists(Pattern("oldIron63.png").similar(0.90)):
             return "iron63"
-        # iron64
+        if exists(Pattern("oldIron64.png").similar(0.90)):
+            return "iron64"
         if exists(Pattern("oldCoal61.png").similar(0.90)):
             return "coal61"
         if exists(Pattern("oldCoal62.png").similar(0.90)):
             return "coal62"
-        
-        # coal63
+        if exists(Pattern("oldCoal63.png").similar(0.90)):
+            return "coal63"
         # sector 7 ------------------
         if exists(Pattern("oldCoal71.png").similar(0.90)):
             return "coal71"
-        if exists("oldCoal72.png"):
+        if exists(Pattern("oldCoal72.png").similar(0.90)):
             return "coal72"
-        # coal73
+        if exists(Pattern("oldCoal73.png").similar(0.90)):
+            return "coal73"
         # sector 8 ------------------
         if exists(Pattern("oldIron81.png").similar(0.90)):
             return "iron81"
@@ -166,7 +174,8 @@ class Mines:
             return "iron82"
         if exists(Pattern("oldIron83.png").similar(0.90)):
             return "iron83"
-        # iron84
+        if exists(Pattern("oldIron84.png").similar(0.90)):
+            return "iron84"
         if exists(Pattern("oldIron85.png").similar(0.90)):
             return "iron85"
         # sector 9 ------------------
@@ -176,7 +185,8 @@ class Mines:
             return "gold92"
         if exists(Pattern("oldGold93.png").similar(0.90)):
             return "gold93"
-        # gold94
+        if exists(Pattern("oldGold94.png").similar(0.90)):
+            return "gold94"
         # gold95
 
     def identifyDeadQuary(self):
