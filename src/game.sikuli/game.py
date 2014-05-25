@@ -70,6 +70,14 @@ class Game:
                 if cross:
                     click(cross)
 
+    def detectAnnouncement(self):
+        if exists("serverAnnouncement.png"):
+            ok = exists("okButton-1.png")
+            if ok:
+                click(ok)
+        
+        
+        
 
 def closeDialog():
     cross = exists("dialogCloseX.png")
