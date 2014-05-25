@@ -117,9 +117,12 @@ class Mines:
             return "copper22"
         if exists(Pattern("oldCopper23.png").similar(0.90)):
             return "copper23"
-        # gold21
-        # gold22
-        # gold23
+        if exists(Pattern("oldGold21.png").similar(0.90)):
+            return "gold21"
+        if exists(Pattern("oldGold22.png").similar(0.90)):
+            return "gold22"
+        if exists("oldGold23.png"):
+            return "gold23"
         # sector 3 ------------------
         if exists(Pattern("oldIron31-1.png").similar(0.90)):
             return "iron31"
@@ -187,7 +190,8 @@ class Mines:
             return "gold93"
         if exists(Pattern("oldGold94.png").similar(0.90)):
             return "gold94"
-        # gold95
+        if exists(Pattern("oldGold95.png").similar(0.90)):
+            return "gold95"
 
     def identifyDeadQuary(self):
         "not needed, as there is no need to rebuild quary"
