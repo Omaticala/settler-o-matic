@@ -637,4 +637,26 @@ class Economy:
         self.prod.building = "Carpenter"
         return self
 
+    def Pumpkins(self):
+        close = self.OpenMaterialsMenu(3)
+        loc = find(Pattern("pumpkin.png").exact())
+        click(loc)
+        self.comodity = Comodity("Pumpkins", loc)
+        self.prod.building = "TODO"
+        return self
+
+    def Beans(self):
+        close = self.OpenMaterialsMenu(3)
+        loc = find(Pattern("bean.png").exact())
+        self.comodity = Comodity("Beans", loc)
+        self.prod.building = "TODO"
+        return self
+
+    def Beanstalks(self):
+        close = self.OpenMaterialsMenu(3)
+        loc = find(Pattern("beanstalk.png").exact())
+        self.comodity = Comodity("Beanstalks", loc)
+        self.prod.building = "TODO"
+        return self
+    
         
