@@ -84,16 +84,18 @@ class Buffs:
         selectComodity = getattr(self.economy, comodity)
         n = 0
         next = 1
-        while next:
-            n += 1
-            selectComodity()
-            building = self.economy.production().selectBuffableBuilding(n)
-            if not building:
-                break
-            next = building.hasNext
-            self.menu.FishPlate()
-            wait(0.1)
-            building.click()
-    
+        try:
+            while next:
+                n += 1
+                selectComodity()
+                building = self.economy.production().selectBuffableBuilding(n)
+                if not building:
+                    break
+                next = building.hasNext
+                self.menu.FishPlate()
+                wait(0.1)
+                building.click()
+        except:
+            pass
 
     
